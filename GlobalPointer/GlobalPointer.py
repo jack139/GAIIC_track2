@@ -22,9 +22,9 @@ learning_rate = 2e-5
 categories = set()
 
 # bert配置
-config_path = '../../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_config.json'
-checkpoint_path = '../../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_model.ckpt'
-dict_path = '../../../nlp_model/chinese_bert_L-12_H-768_A-12/vocab.txt'
+config_path = '../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_config.json'
+checkpoint_path = '../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_model.ckpt'
+dict_path = '../../nlp_model/chinese_bert_L-12_H-768_A-12/vocab.txt'
 
 def load_data(filename):
     """加载数据
@@ -176,7 +176,7 @@ def predict_to_file(in_file, out_file):
     for d in tqdm(data, ncols=100):
         d2 = {
             'entities' : [],
-            'text' : d.strip()
+            'text' : d[:-1] if d[-1]=='\n' else d # 去掉末尾 \n
         }
 
         if len(d2['text'])==0: # 忽略空行
@@ -211,18 +211,20 @@ def predict_to_file(in_file, out_file):
     outf.close()
 
     # 保存json格式
-    json.dump(
-        D,
-        open(out_file+'.json', 'w', encoding='utf-8'),
-        indent=4,
-        ensure_ascii=False
-    )
+    #json.dump(
+    #    D,
+    #    open(out_file+'.json', 'w', encoding='utf-8'),
+    #    indent=4,
+    #    ensure_ascii=False
+    #)
 
 
 if __name__ == '__main__':
 
     evaluator = Evaluator()
     train_generator = data_generator(train_data, batch_size)
+
+    #model.load_weights('./globalpointer_best_f1_0.80232.weights')
 
     model.fit(
         train_generator.forfit(),
@@ -232,5 +234,5 @@ if __name__ == '__main__':
     )
 
 else:
-    model.load_weights('../globalpointer_best_f1_0.64748.weights')
+    model.load_weights('./globalpointer_best_f1_0.80232.weights')
     predict_to_file('../data/preliminary_test_a/sample_per_line_preliminary_A.txt', './test.txt')

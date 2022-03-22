@@ -4,7 +4,7 @@ import json
 infile = '../data/train_data/train.txt'
 outdir = './data'
 
-dev_ratio = 0.2
+dev_ratio = 0.1
 
 '''
   {
@@ -37,7 +37,7 @@ etype = ''
 
 for l in open(infile):
     c = l[0]
-    label = l[2:].strip()
+    label = l[2:-1] if l[-1]=='\n' else l[2:] # 去掉 \n
     text += c
 
     if len(l.strip())==0: # 一行text结束
