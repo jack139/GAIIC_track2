@@ -16,9 +16,9 @@ from keras.models import Model
 from tqdm import tqdm
 
 maxlen = 512
-epochs = 20
+epochs = 30
 batch_size = 4
-learning_rate = 2e-5
+learning_rate = 2e-4
 categories = set()
 
 # bert配置
@@ -158,7 +158,7 @@ class Evaluator(keras.callbacks.Callback):
         # 保存最优
         if f1 >= self.best_val_f1:
             self.best_val_f1 = f1
-            model.save_weights('./cmeee_best_model_globalpointer_f1_%.5f.weights'%f1)
+            model.save_weights('./globalpointer_best_f1_%.5f.weights'%f1)
         print(
             'valid:  f1: %.5f, precision: %.5f, recall: %.5f, best f1: %.5f\n' %
             (f1, precision, recall, self.best_val_f1)
@@ -167,7 +167,6 @@ class Evaluator(keras.callbacks.Callback):
 
 def predict_to_file(in_file, out_file):
     """预测到文件
-    可以提交到 https://tianchi.aliyun.com/dataset/dataDetail?dataId=95414
     """
     data = json.load(open(in_file))
     for d in tqdm(data, ncols=100):
@@ -200,6 +199,5 @@ if __name__ == '__main__':
     )
 
 else:
-
-    model.load_weights('../../ckpt/cmeee_best_model_globalpointer_0.64748.weights')
-    predict_to_file('../../dataset/CMeEE/CMeEE_test.json', '../data/CMeEE_test.json')
+    model.load_weights('../globalpointer_best_f1_0.64748.weights')
+    predict_to_file('./data/test.json', './test.json')
