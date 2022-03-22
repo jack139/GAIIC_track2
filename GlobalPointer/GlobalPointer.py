@@ -15,10 +15,10 @@ from bert4keras.snippets import open, to_array
 from keras.models import Model
 from tqdm import tqdm
 
-maxlen = 512
+maxlen = 128
 epochs = 30
-batch_size = 4
-learning_rate = 2e-4
+batch_size = 128
+learning_rate = 2e-5
 categories = set()
 
 # bert配置
