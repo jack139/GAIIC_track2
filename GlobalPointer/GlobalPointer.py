@@ -1,6 +1,5 @@
 #! -*- coding: utf-8 -*-
 # 用GlobalPointer做中文命名实体识别
-# 数据集 https://tianchi.aliyun.com/dataset/dataDetail?dataId=95414
 
 import json
 import numpy as np
@@ -44,10 +43,8 @@ def load_data(filename):
 
 
 # 标注数据
-#train_data = load_data('../../dataset/CMeEE/CMeEE_train.json')
-#train_data = load_data('../../dataset/ner/CMeEE_train_plus.json')
-train_data = load_data('../../dataset/ner/split_CMeEE_train.json')
-valid_data = load_data('../../dataset/CMeEE/CMeEE_dev.json')
+train_data = load_data('./data/train.json')
+valid_data = load_data('./data/dev.json')
 categories = list(sorted(categories))
 
 # 建立分词器
