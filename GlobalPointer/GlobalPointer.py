@@ -165,22 +165,55 @@ class Evaluator(keras.callbacks.Callback):
         )
 
 
+# 保存两个格式： BIO 和 json
 def predict_to_file(in_file, out_file):
     """预测到文件
     """
-    data = json.load(open(in_file))
+    D = []
+    outf = open(out_file, 'w') # BIO 文件
+    data = open(in_file).readlines() # text 文本
+
     for d in tqdm(data, ncols=100):
-        d['entities'] = []
-        entities = NER.recognize(d['text'])
+        d2 = {
+            'entities' : [],
+            'text' : d.strip()
+        }
+
+        if len(d2['text'])==0: # 忽略空行
+            continue
+
+        # 初始化 BIO 标记
+        char = [c for c in d2['text']]
+        label = ['O']*len(d2['text'])
+
+        # 识别
+        entities = NER.recognize(d2['text'])
         for e in entities:
-            d['entities'].append({
+            d2['entities'].append({
                 'start_idx': e[0],
                 'end_idx': e[1],
                 'type': e[2]
             })
+
+            # 生成 BIO标记
+            label[e[0]] = 'B-'+e[2]
+            for x in range(e[0]+1, e[1]+1):
+                label[x] = 'I-'+e[2]
+
+        D.append(d2)
+
+        # 写入 BIO文件
+        for i in range(len(char)):
+            outf.write(char[i]+' '+label[i]+'\n')
+
+        outf.write('\n') # 写入一个空行结束一个text
+
+    outf.close()
+
+    # 保存json格式
     json.dump(
-        data,
-        open(out_file, 'w', encoding='utf-8'),
+        D,
+        open(out_file+'.json', 'w', encoding='utf-8'),
         indent=4,
         ensure_ascii=False
     )
@@ -200,4 +233,4 @@ if __name__ == '__main__':
 
 else:
     model.load_weights('../globalpointer_best_f1_0.64748.weights')
-    predict_to_file('./data/test.json', './test.json')
+    predict_to_file('../data/preliminary_test_a/sample_per_line_preliminary_A.txt', './test.txt')
