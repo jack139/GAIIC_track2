@@ -97,7 +97,7 @@ with tf.Session(config=tf_config) as sess:
     losses = []
     batches = 0
     best_f1 = 0
-    batch_size = 24
+    batch_size = 128
 
     while epoches < 30:
         (inputs_seq_batch, 
@@ -191,7 +191,7 @@ with tf.Session(config=tf_config) as sess:
             
             return (p, r, f1)
             
-        if batches % 100 == 0:
+        if batches % 500 == 0:
             logger.info("")
             logger.info("Epoches: {}".format(epoches))
             logger.info("Batches: {}".format(batches))
