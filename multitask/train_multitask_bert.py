@@ -15,7 +15,7 @@ data_path = "./data"
 bert_vocab_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/vocab.txt"
 bert_config_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_config.json"
 bert_ckpt_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_model.ckpt"
-#bert_ckpt_path = "./ckpt/model.ckpt.batch4700_0.7603"
+#bert_ckpt_path = "./ckpt/model.ckpt.batch4700_0.7603"  # 继续训练
 
 # set logging
 log_file_path = "./ckpt/run.log"
@@ -49,9 +49,9 @@ data_processor_train = DataProcessor(
 )
 
 data_processor_valid = DataProcessor(
-    data_path+"/val/input.seq.char",
-    data_path+"/val/output.seq.bio",
-    data_path+"/val/output.seq.attr",
+    data_path+"/dev/input.seq.char",
+    data_path+"/dev/output.seq.bio",
+    data_path+"/dev/output.seq.attr",
     w2i_char,
     w2i_bio, 
     w2i_attr, 
