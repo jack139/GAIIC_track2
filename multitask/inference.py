@@ -4,21 +4,20 @@ import numpy as np
 import os
 from datetime import datetime
 
-from .model_multitask_bert import MyModel
-from .bert import modeling as bert_modeling
-from .utils import DataProcessor_MTL_BERT as DataProcessor
-from .utils import load_vocabulary
-from .utils import extract_kvpairs_in_bioes
-from .utils import cal_f1_score
-from .utils import prepare_data
-from config.settings import NER_CHECKPOINT
+from ner.model_multitask_bert import MyModel
+from ner.bert import modeling as bert_modeling
+from ner.utils import DataProcessor_MTL_BERT as DataProcessor
+from ner.utils import load_vocabulary
+from ner.utils import extract_kvpairs_in_bioes
+from ner.utils import cal_f1_score
+from ner.utils import prepare_data
 
-data_path = NER_CHECKPOINT
 
 # base model: chinese_bert_L-12_H-768_A-12
-bert_vocab_path = os.path.join(data_path, "vocab.txt")
-bert_config_path = os.path.join(data_path, "bert_config.json")
-bert_ckpt_path = os.path.join(data_path, "model.ckpt.batch1500_0.8141")
+bert_vocab_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/vocab.txt"
+bert_config_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_config.json"
+#bert_ckpt_path = "../../nlp_model/chinese_bert_L-12_H-768_A-12/bert_model.ckpt"
+bert_ckpt_path = "./ckpt/model.ckpt.batch4700_0.7603"
 
 # set logging
 logger = logging.getLogger()
@@ -30,6 +29,7 @@ logger.addHandler(chlr)
 
 logger.info("loading vocab...")
 
+data_path = "./data"
 w2i_char, i2w_char = load_vocabulary(bert_vocab_path)
 w2i_bio, i2w_bio = load_vocabulary(os.path.join(data_path, "vocab_bio.txt"))
 w2i_attr, i2w_attr = load_vocabulary(os.path.join(data_path, "vocab_attr.txt"))
